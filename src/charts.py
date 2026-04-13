@@ -9,14 +9,22 @@ import plotly.graph_objects as go
 import pandas as pd
 
 # ── palette ───────────────────────────────────────────────────────────────────
-C1 = "#0EA5E9"   # sky-500  — primary
-C2 = "#0284C7"   # sky-600
-C3 = "#38BDF8"   # sky-400
-C4 = "#7DD3FC"   # sky-300
-C5 = "#0369A1"   # sky-700
-C6 = "#22D3EE"   # cyan-400
-C7 = "#06B6D4"   # cyan-500
-COLORS = [C1, C2, C3, C4, C5, C6, C7]
+# Brand anchor (blues — used for single-series charts and gradients)
+C1 = "#38BDF8"   # sky-400     — primary brand
+C2 = "#0EA5E9"   # sky-500
+C3 = "#0284C7"   # sky-600
+
+# Categorical palette — Tailwind 400s spread across the hue wheel
+# Each colour is clearly distinct on a dark background
+COLORS = [
+    "#38BDF8",   # sky-400      blue
+    "#34D399",   # emerald-400  green
+    "#A78BFA",   # violet-400   purple
+    "#FBBF24",   # amber-400    yellow
+    "#F472B6",   # pink-400     pink
+    "#2DD4BF",   # teal-400     teal
+    "#FB923C",   # orange-400   orange
+]
 
 # background / surface
 _BG        = "rgba(0,0,0,0)"          # transparent — card CSS provides surface
@@ -144,7 +152,7 @@ def revenue_by_product_bar(df: pd.DataFrame) -> go.Figure:
         orientation="h",
         marker=dict(
             color=df_s["revenue"],
-            colorscale=[[0, C5], [0.5, C2], [1, C3]],
+            colorscale=[[0, "#0369A1"], [0.5, C2], [1, C1]],
             showscale=False,
             line_width=0,
         ),
@@ -191,7 +199,7 @@ def txn_type_bar(df: pd.DataFrame) -> go.Figure:
         y=df["count"],
         marker=dict(
             color=df["count"],
-            colorscale=[[0, C5], [0.5, C1], [1, C3]],
+            colorscale=[[0, "#0369A1"], [0.5, C2], [1, C1]],
             showscale=False,
             line_width=0,
         ),
@@ -265,7 +273,7 @@ def heatmap_dow_month(df: pd.DataFrame) -> go.Figure:
         z=pivot.values,
         x=list(pivot.columns),
         y=list(pivot.index),
-        colorscale=[[0, "#0F172A"], [0.4, C5], [0.7, C2], [1.0, C3]],
+        colorscale=[[0, "#0F172A"], [0.4, "#0369A1"], [0.7, C2], [1.0, C1]],
         showscale=True,
         colorbar=dict(
             thickness=12,
@@ -414,7 +422,7 @@ def region_revenue_bar(df: pd.DataFrame) -> go.Figure:
         y=df["total_revenue"],
         marker=dict(
             color=df["total_revenue"],
-            colorscale=[[0, C5], [0.5, C1], [1, C3]],
+            colorscale=[[0, "#0369A1"], [0.5, C2], [1, C1]],
             showscale=False,
             line_width=0,
         ),
@@ -558,7 +566,7 @@ def avg_value_digital_bar(df: pd.DataFrame) -> go.Figure:
         lambda c: "Digital" if c in ("mobile_app", "online_banking") else "Physical"
     )
     agg = df2.groupby(["channel", "channel_type"])["amount"].mean().reset_index(name="avg_amount")
-    color_map = {"Digital": C1, "Physical": "#475569"}
+    color_map = {"Digital": C1, "Physical": "#94A3B8"}
     fig = px.bar(
         agg,
         x="channel",
