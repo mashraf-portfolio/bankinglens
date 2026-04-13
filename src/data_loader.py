@@ -4,6 +4,8 @@ Loads the star-schema CSVs and exposes cached, joined DataFrames
 for use across all Streamlit tabs.
 """
 
+import subprocess
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -11,15 +13,24 @@ import streamlit as st
 
 # ── paths ─────────────────────────────────────────────────────────────────────
 _CSV_DIR = Path(__file__).parent.parent / "data" / "csv"
+_GENERATOR = Path(__file__).parent.parent / "data" / "generate_banking_ops.py"
 
 
 def _csv(name: str) -> Path:
     return _CSV_DIR / name
 
 
+def _ensure_data() -> None:
+    """Generate CSVs on first boot (e.g. Streamlit Cloud cold start)."""
+    if not (_CSV_DIR / "Fact_Transactions.csv").exists():
+        with st.spinner("Generating dataset for first run — this takes ~10 seconds..."):
+            subprocess.run([sys.executable, str(_GENERATOR)], check=True)
+
+
 # ── raw dimension / fact loaders ──────────────────────────────────────────────
 @st.cache_data(show_spinner=False)
 def load_fact() -> pd.DataFrame:
+    _ensure_data()
     df = pd.read_csv(_csv("Fact_Transactions.csv"), parse_dates=["transaction_date"])
     return df
 
