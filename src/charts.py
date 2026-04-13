@@ -175,7 +175,7 @@ def segment_pie(df: pd.DataFrame) -> go.Figure:
     ))
     fig.update_layout(
         showlegend=True,
-        legend=dict(**_LEGEND, x=0.5, xanchor="center", y=-0.1, orientation="h"),
+        legend={**_LEGEND, "x": 0.5, "xanchor": "center", "y": -0.1, "orientation": "h"},
         annotations=[dict(
             text=f"<b>{counts['count'].sum():,}</b><br><span style='font-size:10px;color:{_FONT_DIM}'>customers</span>",
             x=0.5, y=0.5, font_size=16, showarrow=False, font_color="#F1F5F9",
