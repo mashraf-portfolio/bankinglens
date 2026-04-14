@@ -10,7 +10,7 @@ and surfaces operational insights across five interactive dashboard tabs.
 
 ## Live Demo
 
-> Deploy to [Streamlit Community Cloud](https://streamlit.io/cloud) — point it at `src/app.py`.
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://bankinglens.streamlit.app)
 
 ---
 
